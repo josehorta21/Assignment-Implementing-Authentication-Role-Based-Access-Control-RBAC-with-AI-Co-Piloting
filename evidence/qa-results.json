@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-11-18T01:23:50.164Z",
+  "runtime": "v22.16.0",
+  "runner": "node --test",
+  "total": 14,
+  "passed": 14,
+  "failed": 0,
+  "skipped": 0,
+  "status": "PASS",
+  "coverage": "API integration tests; browser DevTools inspection is a separate manual video requirement"
+}

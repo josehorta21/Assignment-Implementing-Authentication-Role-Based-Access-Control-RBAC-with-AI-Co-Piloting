@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: 01 Public endpoint is available without a session (200)
+ok 1 - 01 Public endpoint is available without a session (200)
+  ---
+  duration_ms: 57.375281
+  type: 'test'
+  ...
+# Subtest: 02 Protected and admin endpoints reject guests (401)
+ok 2 - 02 Protected and admin endpoints reject guests (401)
+  ---
+  duration_ms: 17.422182
+  type: 'test'
+  ...
+# Subtest: 03 Registration succeeds as User, hashes password, and never returns hashes
+ok 3 - 03 Registration succeeds as User, hashes password, and never returns hashes
+  ---
+  duration_ms: 228.880989
+  type: 'test'
+  ...
+# Subtest: 04 Each password has a unique random salt
+ok 4 - 04 Each password has a unique random salt
+  ---
+  duration_ms: 429.342297
+  type: 'test'
+  ...
+# Subtest: 05 Login creates an HttpOnly session; dashboard allows User; admin denies User (403)
+ok 5 - 05 Login creates an HttpOnly session; dashboard allows User; admin denies User (403)
+  ---
+  duration_ms: 498.528
+  type: 'test'
+  ...
+# Subtest: 06 Admin seeded on the server can access both protected and admin routes (200)
+ok 6 - 06 Admin seeded on the server can access both protected and admin routes (200)
+  ---
+  duration_ms: 740.089407
+  type: 'test'
+  ...
+# Subtest: 07 Logging out invalidates the server session, not just the browser cookie
+ok 7 - 07 Logging out invalidates the server session, not just the browser cookie
+  ---
+  duration_ms: 728.506632
+  type: 'test'
+  ...
+# Subtest: 08 Invalid login returns generic, identical 401 for known and unknown users
+ok 8 - 08 Invalid login returns generic, identical 401 for known and unknown users
+  ---
+  duration_ms: 1085.921362
+  type: 'test'
+  ...
+# Subtest: 09 Registration refuses role injection and empty fields
+ok 9 - 09 Registration refuses role injection and empty fields
+  ---
+  duration_ms: 35.580156
+  type: 'test'
+  ...
+# Subtest: 10 SQL-like input never bypasses login or crashes the server
+ok 10 - 10 SQL-like input never bypasses login or crashes the server
+  ---
+  duration_ms: 511.530123
+  type: 'test'
+  ...
+# Subtest: 11 Unexpected origins and non-JSON POSTs are rejected
+ok 11 - 11 Unexpected origins and non-JSON POSTs are rejected
+  ---
+  duration_ms: 20.912864
+  type: 'test'
+  ...
+# Subtest: 12 Malformed JSON and oversized bodies fail safely
+ok 12 - 12 Malformed JSON and oversized bodies fail safely
+  ---
+  duration_ms: 21.387563
+  type: 'test'
+  ...
+# Subtest: 13 Repeated failed logins trigger 429 rate limiting
+ok 13 - 13 Repeated failed logins trigger 429 rate limiting
+  ---
+  duration_ms: 2656.92196
+  type: 'test'
+  ...
+# Subtest: 14 Production session cookies include Secure and __Host- prefix
+ok 14 - 14 Production session cookies include Secure and __Host- prefix
+  ---
+  duration_ms: 463.447954
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7726.131287

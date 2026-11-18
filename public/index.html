@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>BoundaryLab — Authentication & RBAC Security</title>
+  <meta name="description" content="A live authentication, authorization and security QA demonstration with real backend access controls.">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a href="/" class="brand" aria-label="BoundaryLab home">
+        <span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M20 4 34 10v10c0 9-6 14-14 18C12 34 6 29 6 20V10L20 4Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="m13 20 5 5 10-11" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span>Boundary<span class="brand-accent">Lab</span><small>APPLICATION SECURITY LAB</small></span>
+      </a>
+      <div class="top-right"><span class="live-dot"></span><span class="system-health">LOCAL SECURITY ENVIRONMENT</span><span id="session-pill" class="session-pill">Guest session</span></div>
+    </header>
+
+    <div class="hero">
+      <div class="eyebrow"><span class="eyebrow-line"></span> SECURITY ENGINEERING / WEEK 02 HANDS-ON</div>
+      <h1>Prove the <em>boundary.</em></h1>
+      <p>Authentication confirms <strong>who you are.</strong> Authorization determines <strong>what you can do.</strong> Test both with real requests, real server guards, and observable HTTP responses.</p>
+      <div class="hero-tags"><span><i class="tag-circle mint"></i> 600k PBKDF2 iterations</span><span><i class="tag-circle cyan"></i> Server-side RBAC</span><span><i class="tag-circle violet"></i> Revocable sessions</span></div>
+    </div>
+
+    <div class="dashboard-grid">
+      <aside class="side-panel">
+        <div class="panel-heading"><div><p class="section-kicker">IDENTITY CENTER</p><h2>Session control</h2></div><span class="panel-index">01 / 03</span></div>
+        <div class="session-overview" id="auth-overview"><div class="avatar anonymous" id="avatar">?</div><div><div class="session-name" id="session-name">Not authenticated</div><div class="session-subtitle" id="session-subtitle">No active identity</div></div></div>
+        <div id="auth-form-area">
+          <div class="form-toggle" role="tablist" aria-label="Authentication mode"><button id="tab-login" class="toggle-btn selected" type="button" role="tab" aria-selected="true">Sign in</button><button id="tab-register" class="toggle-btn" type="button" role="tab" aria-selected="false">Register</button></div>
+          <form id="auth-form" novalidate>
+            <label for="username">USERNAME <span class="required">*</span></label>
+            <input id="username" name="username" autocomplete="username" spellcheck="false" maxlength="32" placeholder="e.g. developer01" required>
+            <label for="password">PASSWORD <span class="required">*</span></label>
+            <input id="password" name="password" type="password" autocomplete="current-password" placeholder="At least 12 characters" required>
+            <p id="auth-helper">Use a registered account to obtain a secure session.</p>
+            <button class="primary-button" id="submit-auth" type="submit">Sign in <span aria-hidden="true">↗</span></button>
+          </form>
+        </div>
+        <div id="signed-in-area" hidden>
+          <div class="authenticated-status"><span class="check-circle">✓</span><span>Identity verified by the server</span></div>
+          <div class="info-pair"><span>AUTHENTICATION</span><strong>Active session</strong></div>
+          <div class="info-pair"><span>ACCESS ROLE</span><strong id="role-display">USER</strong></div>
+          <button class="logout-button" id="logout-button" type="button">Terminate session <span>↗</span></button>
+        </div>
+        <div class="identity-footnote"><span class="mini-lock">▣</span><p>Passwords are hashed server-side. The browser receives only an HttpOnly session cookie.</p></div>
+      </aside>
+
+      <main class="main-panel">
+        <div class="panel-heading main-heading"><div><p class="section-kicker">POLICY ENFORCEMENT</p><h2>Access boundary explorer</h2></div><span class="panel-index">02 / 03</span></div>
+        <nav class="view-tabs" aria-label="Access boundary views">
+          <button type="button" class="view-tab selected" data-view="public"><span class="view-icon">◈</span> Public</button>
+          <button type="button" class="view-tab" data-view="user"><span class="view-icon">◫</span> Dashboard</button>
+          <button type="button" class="view-tab" data-view="admin"><span class="view-icon">⬡</span> Admin console</button>
+          <button type="button" class="view-tab" data-view="qa"><span class="view-icon">⌁</span> QA lab</button>
+        </nav>
+
+        <section id="view-public" class="view active" aria-labelledby="public-title">
+          <div class="status-line"><span class="status-marker public-marker">PUBLIC</span><span class="endpoint">GET /api/public</span><span class="http-code success" id="public-status">200 OK</span></div>
+          <div class="view-hero public-hero"><div class="view-symbol">◎</div><div><p class="section-kicker">ACCESS LEVEL 00</p><h3 id="public-title">Open by design.</h3><p>Anyone can access this resource. Identity verification is intentionally not required.</p></div></div>
+          <div class="feature-grid">
+            <div class="feature-card"><span class="feature-icon">01</span><h4>Authentication / AuthN</h4><p>Validates a user's identity using a securely verified password and an opaque session.</p></div>
+            <div class="feature-card"><span class="feature-icon">02</span><h4>Authorization / AuthZ</h4><p>Decides whether the authenticated identity has permission to access a given resource.</p></div>
+            <div class="feature-card"><span class="feature-icon">03</span><h4>Defense in depth</h4><p>Multiple controls combine: backend guards, secure cookies, input validation, and hashing.</p></div>
+          </div>
+          <button class="outline-button" id="public-check" type="button">Verify public endpoint <span>↗</span></button>
+        </section>
+
+        <section id="view-user" class="view" aria-labelledby="user-title" hidden>
+          <div class="status-line"><span class="status-marker protected-marker">PROTECTED</span><span class="endpoint">GET /api/user/dashboard</span><span class="http-code" id="user-status">—</span></div>
+          <div id="user-content" class="access-state"><div class="lock-illustration">▢</div><h3 id="user-title">Identity required.</h3><p>Sign in as either a standard User or an Admin to cross this boundary.</p><button class="outline-button" id="user-check" type="button">Check protected access <span>↗</span></button></div>
+        </section>
+
+        <section id="view-admin" class="view" aria-labelledby="admin-title" hidden>
+          <div class="status-line"><span class="status-marker admin-marker">ADMIN ONLY</span><span class="endpoint">GET /api/admin/users</span><span class="http-code" id="admin-status">—</span></div>
+          <div id="admin-content" class="access-state"><div class="lock-illustration">⬡</div><h3 id="admin-title">Privileged boundary.</h3><p>The API itself enforces the Admin role, even if a user manually calls the endpoint.</p><button class="outline-button" id="admin-check" type="button">Attempt admin access <span>↗</span></button></div>
+        </section>
+
+        <section id="view-qa" class="view" aria-labelledby="qa-title" hidden>
+          <div class="status-line"><span class="status-marker test-marker">TESTING</span><span class="endpoint">Live HTTP security assertions</span></div>
+          <div class="qa-heading"><h3 id="qa-title">Negative testing workspace</h3><p>Execute controlled security tests and inspect the matching responses in Chrome DevTools → Network.</p></div>
+          <div class="test-grid">
+            <button class="test-action" data-probe="public" type="button"><span class="test-indicator">200</span><span><strong>Public access</strong><small>Should return 200</small></span><span>↗</span></button>
+            <button class="test-action" data-probe="user" type="button"><span class="test-indicator">401/200</span><span><strong>Protected resource</strong><small>Guest denied; login accepted</small></span><span>↗</span></button>
+            <button class="test-action" data-probe="admin" type="button"><span class="test-indicator">403/200</span><span><strong>Privilege boundary</strong><small>User denied; Admin accepted</small></span><span>↗</span></button>
+            <button class="test-action" data-probe="bad-login" type="button"><span class="test-indicator">401</span><span><strong>Invalid credentials</strong><small>Generic error message</small></span><span>↗</span></button>
+            <button class="test-action" data-probe="bad-input" type="button"><span class="test-indicator">400</span><span><strong>Empty input validation</strong><small>Reject invalid registration</small></span><span>↗</span></button>
+            <button class="test-action" data-probe="injection" type="button"><span class="test-indicator">401</span><span><strong>SQL-like input</strong><small>No error or bypass</small></span><span>↗</span></button>
+          </div>
+          <div class="qa-notice">View the exact HTTP status in <strong>DevTools → Network → Fetch/XHR</strong>. The backend—not this interface—determines permission.</div>
+        </section>
+      </main>
+    </div>
+
+    <section class="trace-panel" aria-labelledby="trace-title">
+      <div class="trace-title"><div><p class="section-kicker">REQUEST TELEMETRY</p><h2 id="trace-title">Security event trace</h2></div><button id="clear-trace" class="trace-clear" type="button">Clear output ↗</button></div>
+      <div class="trace-head"><span>TIME</span><span>METHOD / ENDPOINT</span><span>RESULT</span><span>DETAIL</span></div>
+      <div id="trace-items" class="trace-items" aria-live="polite"><div class="trace-placeholder">Awaiting your first request. Run a test to populate this log.</div></div>
+    </section>
+    <footer><span>BOUNDARYLAB / AUTHENTICATION + RBAC</span><span>Educational demo · Node.js · Server-side checks · No external API keys</span></footer>
+  </div>
+  <div id="toast" role="status" aria-live="polite" class="toast" hidden></div>
+</body>
+</html>

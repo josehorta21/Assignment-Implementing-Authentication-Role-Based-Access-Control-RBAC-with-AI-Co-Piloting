@@ -1,0 +1,19 @@
+flowchart LR
+    subgraph UNTRUSTED[Untrusted browser]
+      Client[Browser UI / QA probes]
+    end
+    subgraph TRUST[Trusted backend boundary]
+      API[Node HTTP API]
+      AuthN[AuthN: password + session validation]
+      AuthZ[AuthZ: server-side role policy]
+      Store[(Local demo storage)]
+    end
+    Client -->|POST login / register| API
+    Client -->|HttpOnly session cookie| API
+    API --> AuthN
+    AuthN -->|Identity verified| AuthZ
+    AuthN -->|No valid session: 401| Client
+    AuthZ -->|User to admin endpoint: 403| Client
+    AuthZ -->|Admin allowed: 200| Store
+    Store -->|Sanitized user records| API
+    API -->|200 response| Client
